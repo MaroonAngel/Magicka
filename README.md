@@ -1,3 +1,3 @@
 # Magicka
 
-This is a simple mod that adds magic spells to minecraft.
+This is a simple fabric mod that adds magic spells to minecraft.
