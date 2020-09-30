@@ -1,12 +1,14 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.fabricmc.example.mixin",
+  "package": "net.maroonangel.magicka.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "PlayerEntityMixin"
   ],
   "client": [
-    "ExampleMixin"
+    "DefaultBiomeFeaturesMixin",
+    "InGameHudMixin"
   ],
   "injectors": {
     "defaultRequire": 1
