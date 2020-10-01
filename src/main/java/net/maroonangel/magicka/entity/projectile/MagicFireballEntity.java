@@ -4,9 +4,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.projectile.AbstractFireballEntity;
-import net.minecraft.entity.projectile.ExplosiveProjectileEntity;
-import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.hit.EntityHitResult;
@@ -15,13 +12,8 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-public class MagicFireballEntity extends AbstractFireballEntity {
-    public int explosionPower = 1;
+public class MagicFireballEntity extends AbstractMagicEntity {
     private int age = 0;
-
-    public MagicFireballEntity(EntityType<? extends FireballEntity> entityType, World world) {
-        super(entityType, world);
-    }
 
     @Environment(EnvType.CLIENT)
     public MagicFireballEntity(World world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
@@ -36,7 +28,7 @@ public class MagicFireballEntity extends AbstractFireballEntity {
         super.onCollision(hitResult);
         if (!this.world.isClient) {
             boolean bl = this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING);
-            this.world.createExplosion((Entity)null, this.getX(), this.getY(), this.getZ(), (float)this.explosionPower, false, Explosion.DestructionType.NONE);
+            this.world.createExplosion((Entity)null, this.getX(), this.getY(), this.getZ(), (float)this.power, false, Explosion.DestructionType.NONE);
             this.remove();
         }
 
@@ -51,7 +43,7 @@ public class MagicFireballEntity extends AbstractFireballEntity {
         if (!this.world.isClient) {
             Entity entity = entityHitResult.getEntity();
             Entity entity2 = this.getOwner();
-            entity.damage(DamageSource.fireball(this, entity2), this.explosionPower * 2f);
+            entity.damage(DamageSource.fireball(this, entity2), this.power * 2f);
             if (entity2 instanceof LivingEntity) {
                 this.dealDamage((LivingEntity)entity2, entity);
             }
@@ -61,13 +53,13 @@ public class MagicFireballEntity extends AbstractFireballEntity {
 
     public void writeCustomDataToTag(CompoundTag tag) {
         super.writeCustomDataToTag(tag);
-        tag.putInt("ExplosionPower", this.explosionPower);
+        tag.putInt("ExplosionPower", this.power);
     }
 
     public void readCustomDataFromTag(CompoundTag tag) {
         super.readCustomDataFromTag(tag);
         if (tag.contains("ExplosionPower", 99)) {
-            this.explosionPower = tag.getInt("ExplosionPower");
+            this.power = tag.getInt("ExplosionPower");
         }
     }
 

@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.maroonangel.magicka.block.Blocks;
+import net.maroonangel.magicka.entity.effect.StatusEffects;
 import net.maroonangel.magicka.gen.Features;
 import net.maroonangel.magicka.item.Items;
 import net.maroonangel.magicka.mana.Mana;
@@ -32,6 +33,7 @@ public class Magicka implements ModInitializer {
 		Features.register();
 		Recipes.register();
 		Spells.register();
+		StatusEffects.register();
 
 		//Registry.register(Registry.ENCHANTMENT)
 	}

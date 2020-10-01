@@ -10,49 +10,50 @@ import net.minecraft.util.math.MathHelper;
 
 public class ManaHudGui extends DrawableHelper {
 
+    public int entityHealth = 0;
+
     public void render(MatrixStack matrices) {
         MinecraftClient client = MinecraftClient.getInstance();
         client.getTextureManager().bindTexture(new Identifier("magicka", "textures/gui/mana.png"));
         IManaManager manaManager = (IManaManager)client.player;
-        int v = manaManager.getManager().mana / 50;
+        if (manaManager.getManager().active) {
 
-        int scaledWidth = client.getWindow().getScaledWidth();
-        int scaledHeight = client.getWindow().getScaledHeight();
 
-        int m = scaledWidth / 2 - 91;
+            int v = manaManager.getManager().mana / 5;
 
-        float f = manaManager.getManager().maxMana / 50f;
-        int p = MathHelper.ceil(client.player.getAbsorptionAmount());
+            int scaledWidth = client.getWindow().getScaledWidth();
+            int scaledHeight = client.getWindow().getScaledHeight();
 
-        int o = scaledHeight - 39;
-        int q = MathHelper.ceil((f + (float)p) / 2.0F / 10.0F);
-        int r = Math.max(10 - (q - 2), 3);
-        int s = o - (q - 1) * r - 10;
+            int m = scaledWidth / 2 + 91;
 
-        v = 20 - v;
+            float f = manaManager.getManager().maxMana / 50f;
+            int p = MathHelper.ceil(client.player.getAbsorptionAmount());
 
-        int z;
-        int aa;
-        for(z = 0; z < 10; ++z) {
-            aa = m + z * 8;
-            if (z * 2 + 1 < v) {
-                this.drawTexture(matrices, aa, s, 34, 9, 9, 9);
-            }
+            int o = scaledHeight - 39;
+            int q = MathHelper.ceil((f + (float) p) / 2.0F / 10.0F);
+            int r = Math.max(10 - (q - 2), 3);
+            int screenY = o - (q - 1) * r - 10;
 
-            if (z * 2 + 1 == v) {
-                this.drawTexture(matrices, aa, s, 25, 9, 9, 9);
-            }
+            if (entityHealth > 10)
+                screenY -= 10;
 
-            if (z * 2 + 1 > v) {
-                this.drawTexture(matrices, aa, s, 16, 9, 9, 9);
+            v = 200 - v;
+
+
+            int x = 79;
+            int y = 18;
+
+            int z;
+            int screenX;
+            for (z = 0; z < 81; ++z) {
+                screenX = m - z * 1 - 1;
+
+                if (z * (125/50f) + 1 <= v)
+                    this.drawTexture(matrices, screenX, screenY, x + z, y, 1, 9);
+                if (z * (125/50f) + 1 > v)
+                    this.drawTexture(matrices, screenX, screenY, x + z, y+9, 1, 9);
+
             }
         }
-
-
-
-
     }
-
-
-
 }

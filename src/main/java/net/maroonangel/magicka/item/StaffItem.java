@@ -82,7 +82,7 @@ public class StaffItem extends RangedWeaponItem implements Vanishable {
                 IManaManager inter = (IManaManager)playerEntity;
                 if (i >= 10) {
 
-                    if ((inter.getManager().maxMana - inter.getManager().mana) >= this.currentSpell.manaCost || playerEntity.isCreative()) {
+                    if (inter.getManager().active && (inter.getManager().maxMana - inter.getManager().mana) >= this.currentSpell.manaCost || playerEntity.isCreative()) {
                         this.currentSpell.cast(stack, world, playerEntity);
                         //playerEntity.getItemCooldownManager().set(this, 20);
                     } else {
@@ -93,69 +93,6 @@ public class StaffItem extends RangedWeaponItem implements Vanishable {
             }
         }
     }
-
-        /*
-        if (user instanceof PlayerEntity) {
-            PlayerEntity playerEntity = (PlayerEntity)user;
-            int i = this.getMaxUseTime(stack) - remainingUseTicks;
-            if (i >= 10) {
-                int j = EnchantmentHelper.getRiptide(stack);
-                if (j <= 0 || playerEntity.isTouchingWaterOrRain()) {
-                    if (!world.isClient) {
-                        stack.damage(1, playerEntity, (p) -> {
-                            p.sendToolBreakStatus(user.getActiveHand());
-                        });
-                        if (j == 0) {
-                            TridentEntity tridentEntity = new TridentEntity(world, playerEntity, stack);
-                            tridentEntity.setProperties(playerEntity, playerEntity.pitch, playerEntity.yaw, 0.0F, 2.5F + (float)j * 0.5F, 1.0F);
-                            if (playerEntity.abilities.creativeMode) {
-                                tridentEntity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
-                            }
-
-                            world.spawnEntity(tridentEntity);
-                            world.playSoundFromEntity((PlayerEntity)null, tridentEntity, SoundEvents.ITEM_TRIDENT_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                            if (!playerEntity.abilities.creativeMode) {
-                                playerEntity.inventory.removeOne(stack);
-                            }
-                        }
-                    }
-
-                    playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
-                    if (j > 0) {
-                        float f = playerEntity.yaw;
-                        float g = playerEntity.pitch;
-                        float h = -MathHelper.sin(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-                        float k = -MathHelper.sin(g * 0.017453292F);
-                        float l = MathHelper.cos(f * 0.017453292F) * MathHelper.cos(g * 0.017453292F);
-                        float m = MathHelper.sqrt(h * h + k * k + l * l);
-                        float n = 3.0F * ((1.0F + (float)j) / 4.0F);
-                        h *= n / m;
-                        k *= n / m;
-                        l *= n / m;
-                        playerEntity.addVelocity((double)h, (double)k, (double)l);
-                        playerEntity.setRiptideTicks(20);
-                        if (playerEntity.isOnGround()) {
-                            float o = 1.1999999F;
-                            playerEntity.move(MovementType.SELF, new Vec3d(0.0D, 1.1999999284744263D, 0.0D));
-                        }
-
-                        SoundEvent soundEvent3;
-                        if (j >= 3) {
-                            soundEvent3 = SoundEvents.ITEM_TRIDENT_RIPTIDE_3;
-                        } else if (j == 2) {
-                            soundEvent3 = SoundEvents.ITEM_TRIDENT_RIPTIDE_2;
-                        } else {
-                            soundEvent3 = SoundEvents.ITEM_TRIDENT_RIPTIDE_1;
-                        }
-
-                        world.playSoundFromEntity((PlayerEntity)null, playerEntity, soundEvent3, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                    }
-
-                }
-            }
-        }
-         */
-
 
     private Spell selectSpell(int index, ItemStack stack) {
         return SpellHelper.getSpellAtIndex(stack, index);
@@ -172,24 +109,6 @@ public class StaffItem extends RangedWeaponItem implements Vanishable {
             user.setCurrentHand(hand);
             return TypedActionResult.consume(itemStack);
         }
-    }
-
-
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        /*
-        if (stack.hasEnchantments() && !world.isClient() && entity instanceof ServerPlayerEntity) {
-            PlayerEntity player = (PlayerEntity)entity;
-            IManaManager mana = (IManaManager)player;
-            if (stack.getDamage() != mana.getManager().mana)
-                if (stack.getDamage() < mana.getManager().mana)
-                    stack.damage(1, world.random, (ServerPlayerEntity)player);
-                else
-                    stack.damage(-1, world.random, (ServerPlayerEntity)player);
-            //stack.setDamage(mana.getManager().mana);
-        }
-         */
-
     }
 
 }

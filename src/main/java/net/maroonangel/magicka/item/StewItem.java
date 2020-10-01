@@ -1,5 +1,6 @@
 package net.maroonangel.magicka.item;
 
+import net.maroonangel.magicka.mana.IManaManager;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -19,8 +20,15 @@ public class StewItem extends Item {
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        user.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 200));
+        user.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 160));
         user.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 100));
+        user.addStatusEffect(new StatusEffectInstance(net.maroonangel.magicka.entity.effect.StatusEffects.GAIN_MANA, 160));
+
+        if (user instanceof PlayerEntity) {
+            PlayerEntity pe = (PlayerEntity)user;
+            IManaManager manaplayer = (IManaManager)pe;
+            manaplayer.getManager().activate();
+        }
 
         return user instanceof PlayerEntity && ((PlayerEntity)user).abilities.creativeMode ? stack : new ItemStack(Items.BOWL);
     }
